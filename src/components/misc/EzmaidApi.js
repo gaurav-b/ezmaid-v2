@@ -10,6 +10,8 @@ export const ezmaidApi = {
   maidsList,
   addAdmin,
   getAdminProfile,
+  getMaidProfile,
+  getCustomerProfile,
   changePassword,
 
   getUsers,
@@ -58,6 +60,18 @@ function addAdmin(toBeSaved, user) {
 
 function getAdminProfile(user, adminId) {
   return instance.get(`/admins/${adminId}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function getMaidProfile(user, maidId) {
+  return instance.get(`/maids/${maidId}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function getCustomerProfile(user, customerId) {
+  return instance.get(`/customers/${customerId}`, {
     headers: { 'Authorization': bearerAuth(user) }
   })
 }

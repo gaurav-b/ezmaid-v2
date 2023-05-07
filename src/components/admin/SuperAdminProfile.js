@@ -21,10 +21,12 @@ class SuperAdminProfile extends Component {
         isSuperAdmin: true,
         currpassword: '',
         newpassword: '',
-        renewpassword: '',
         isAdminsLoading: false,
-        errorMessage: '',
-        isError: false
+        message: '',
+        isError: false,
+        isSuccess: false,
+        showError: false,
+        showSuccess: false
     }
 
     componentDidMount() {
@@ -61,6 +63,13 @@ class SuperAdminProfile extends Component {
             })
             .catch(error => {
                 handleLogError(error)
+                this.setState({
+                    isError: true,
+                    showError: true,
+                    isSuccess: false,
+                    showSuccess: false,
+                    message: error.message
+                })
             })
             .finally(() => {
                 this.setState({ isUsersLoading: false })
@@ -74,13 +83,16 @@ class SuperAdminProfile extends Component {
         const Auth = this.context
         const user = Auth.getUser()
 
-        const { username, currpassword, newpassword, renewpassword } = this.state
+        const { username, currpassword, newpassword} = this.state
         this.setState({ isAdminsLoading: true })
 
-        if (!(username && currpassword && newpassword && renewpassword)) {
+        if (!(username && currpassword && newpassword)) {
             this.setState({
                 isError: true,
-                errorMessage: 'Please, inform all fields!'
+                showError: true,
+                isSuccess: false,
+                showSuccess: false,
+                message: 'Please, inform all fields!'
             })
             return
         }
@@ -89,18 +101,39 @@ class SuperAdminProfile extends Component {
 
         ezmaidApi.changePassword(user, toBeUpdated)
             .then(response => {
-                console.log('password changed!')
+                this.setState({
+                    isError: false,
+                    showError: false,
+                    isSuccess: true,
+                    showSuccess: true,
+                    message: 'Password changed successfully!'
+                })
             })
             .catch(error => {
                 handleLogError(error)
+                this.setState({
+                    isError: true,
+                    showError: true,
+                    isSuccess: false,
+                    showSuccess: false,
+                    message: error.message
+                })
             })
             .finally(() => {
                 this.setState({ isUsersLoading: false })
             })
     }
 
+    hideSuccessMessage = (e) => {
+        this.setState({isSuccess: false, showSuccess: false})
+    }
+
+    hideErrorMessage = (e) => {
+        this.setState({isError: false, showError: false})
+    }
+
     render() {
-        const { isSuperAdmin, adminId, fName, mName, lName, contactNumber, address, email, username, errorMessage, isError } = this.state
+        const { isSuperAdmin, adminId, fName, mName, lName, contactNumber, address, email, username, message, isError, isSuccess, showError, showSuccess } = this.state
 
         if (!isSuperAdmin) {
             return <Navigate to='/' />
@@ -194,27 +227,13 @@ class SuperAdminProfile extends Component {
                                                         </div>
                                                     </div>
 
-                                                    <div class="row mb-3">
-                                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                                                        <div class="col-md-8 col-lg-9">
-                                                            <Form.Input
-                                                                fluid
-                                                                autoFocus
-                                                                name='renewpassword'
-                                                                id="renewPassword"
-                                                                iconPosition='left'
-                                                                placeholder='Reenter new password'
-                                                                onChange={this.handleInputChange}
-                                                            />
-                                                        </div>
-                                                    </div>
-
                                                     <div class="text-center">
                                                         <button className="btn main-color btn-primary" type="submit" onClick={this.handleChangePassword}>Change Password</button>
                                                     </div>
                                                 </form>
 
-                                                {isError && <Message negative>{errorMessage}</Message>}
+                                                {isError && showError && <Message negative onClick={this.hideErrorMessage}>{message}</Message>}
+                                                {isSuccess && showSuccess && <Message negative onClick={this.hideSuccessMessage}>{message}</Message>}
                                             </div>
 
                                         </div>
