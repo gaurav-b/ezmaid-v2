@@ -11,7 +11,6 @@ import AboutUs from './components/misc/AboutUs'
 import Home from './components/home/Home'
 import Login from './components/home/Login'
 import Signup from './components/home/Signup'
-import UserPage from './components/user/UserPage'
 import AdminList from './components/admin/AdminList'
 import CustomerList from './components/customer/CustomerList'
 import MaidList from './components/maid/MaidList'
@@ -45,7 +44,6 @@ function App() {
               <Route path="/customers" element={<PrivateRoute><CustomerList /></PrivateRoute>} />
               <Route path="/maids" element={<PrivateRoute><MaidList /></PrivateRoute>} />
               
-              <Route path="/userpage" element={<PrivateRoute><UserPage /></PrivateRoute>} />
               <Route path="*" element={<Navigate to="/" />} />
               <Route path='/contactus' element={<ContactUs />} />
               <Route path='/aboutus' element={<AboutUs />} />
