@@ -238,7 +238,7 @@ class MaidProfile extends Component {
                                                     </div>
 
                                                     <div class="text-center">
-                                                        <button className="btn main-color btn-primary" type="submit" onClick={this.handleChangePassword}>Change Password</button>
+                                                        <button className="btn main-color text-white" type="submit" onClick={this.handleChangePassword}>Change Password</button>
                                                     </div>
                                                 </form>
 

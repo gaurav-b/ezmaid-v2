@@ -14,13 +14,6 @@ class CustomerList extends Component {
         isAdmin: true,
         isSuperAdmin: true,
         isCustomersLoading: false,
-        // adminId: '',
-        // fName: '',
-        // mName: '',
-        // lName: '',
-        // contactNumber: '',
-        // address: '',
-        // email: ''
     }
 
     componentDidMount() {
@@ -58,13 +51,15 @@ class CustomerList extends Component {
             const customers = this.state.customers;
 
             return (
-                <div className='mt-5 container'>
-                    <div className='card'>
-                        <div className='card-header'>
-                            Customers list
-                        </div>
-                        <div className='card-body'>
-                            <CustomerTable customers={customers} />
+                <div className="row justify-content-center align-items-center">
+                    <div className="col-lg-11 mt-5">
+                        <div className='card'>
+                            <div class="card-body">
+                                <h5 class="card-title">Customer List</h5>
+                                <div className='card-body'>
+                                    <CustomerTable customers={customers} />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

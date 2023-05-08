@@ -29,7 +29,7 @@ class MaidList extends Component {
 
         const isAdmin = user.data.rol[0] === 'Admin'
         const isSuperAdmin = user.data.rol[0] === 'SuperAdmin'
-        
+
         this.setState({ isAdmin })
         this.setState({ isSuperAdmin })
 
@@ -59,13 +59,15 @@ class MaidList extends Component {
             const maids = this.state.maids;
 
             return (
-                <div className='mt-5 container'>
-                    <div className='card'>
-                        <div className='card-header'>
-                            Maids list
-                        </div>
-                        <div className='card-body'>
-                            <MaidTable maids={maids} />
+                <div className="row justify-content-center align-items-center">
+                    <div className="col-lg-11 mt-5">
+                        <div className='card'>
+                            <div class="card-body">
+                                <h5 class="card-title">Maid List</h5>
+                                <div className='card-body'>
+                                    <MaidTable maids={maids} />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

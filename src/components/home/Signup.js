@@ -98,7 +98,6 @@ class Signup extends Component {
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">Register to explore more!</h5>
-                  <hr />
                   <form className="row g-3">
                     <div className="col-sm-10">
                       <div className="form-check">
@@ -216,7 +215,7 @@ class Signup extends Component {
                       />
                     </div>
                     <div className="text-center">
-                      <button type="submit" className="btn main-color text-white" onClick={this.handleSubmit}>Submit</button>
+                      <button type="submit" className="btn main-color text-white me-1" onClick={this.handleSubmit}>Submit</button>
                       <button type="reset" className="btn btn-secondary">Reset</button>
                     </div>
                   </form>

@@ -1,20 +1,30 @@
 import CustomerRowItem from "./CustomerRowItem"
+import { useAuth } from '../context/AuthContext'
 
 function CustomerTable(props) {
 
-    return(
+    const { getUser} = useAuth()
+
+    const adminStyle = () => {
+        const user = getUser()
+        return user && user.data.rol[0] === 'Admin' ? { "display": "block" } : { "display": "none" }
+    }
+
+    return (
         <table className="table table-hover">
             <thead>
-                <th scope='col'>#</th>
-                <th scope='col'>First Name</th>
-                <th scope='col'>Middle Name</th>
-                <th scope='col'>Last Name</th>
-                <th scope='col'>Contact Number</th>
-                <th scope='col'>Address</th>
-                <th scope='col'>Email</th>
-                <th scope='col'>Adhar Card Number</th>
-                <th scope='col'>PAN Card Number</th>
-                <th scope='col'>Actions</th>
+                <tr>
+                    <th scope='col'>#</th>
+                    <th scope='col'>First Name</th>
+                    <th scope='col'>Middle Name</th>
+                    <th scope='col'>Last Name</th>
+                    <th scope='col'>Contact Number</th>
+                    <th scope='col'>Address</th>
+                    <th scope='col'>Email</th>
+                    <th scope='col'>Adhar Card Number</th>
+                    <th scope='col'>PAN Card Number</th>
+                    <th scope='col' style={adminStyle()}>Actions</th>
+                </tr>
             </thead>
             <tbody>
                 {
@@ -31,8 +41,10 @@ function CustomerTable(props) {
                             email={customer.email}
                             adharCardNumber={customer.adharCardNumber}
                             panCardNumber={customer.panCardNumber}
+                            isActive={customer.user.isActive}
+                            adminStyle={adminStyle}
                         />
-                ))
+                    ))
                 }
             </tbody>
         </table>
