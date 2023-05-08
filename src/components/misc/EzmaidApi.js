@@ -13,12 +13,11 @@ export const ezmaidApi = {
   getMaidProfile,
   getCustomerProfile,
   changePassword,
+  deactivateUser,
+  activateUser,
 
   getUsers,
   deleteUser,
-  getOrders,
-  deleteOrder,
-  createOrder,
   getUserMe
 }
 
@@ -77,10 +76,28 @@ function getCustomerProfile(user, customerId) {
 }
 
 function changePassword(user, toBeUpdated) {
-  return instance.put('/changepass', toBeUpdated, {
+  return instance.put('/users/changepass', toBeUpdated, {
     headers: { 'Authorization': bearerAuth(user)}
   })
 }
+
+function deactivateUser(user, payload) {
+  return instance.put('/users/deactivate', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+function activateUser(user, payload) {
+  return instance.put('/users/activate', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+
+
+
+
+
 
 
 function getUsers(user, username) {
@@ -93,28 +110,6 @@ function getUsers(user, username) {
 function deleteUser(user, username) {
   return instance.delete(`/api/users/${username}`, {
     headers: { 
-      'Content-type': 'application/json',
-      'Authorization': bearerAuth(user)
-    }
-  })
-}
-
-function getOrders(user, text) {
-  const url = text ? `/api/orders?text=${text}` : '/api/orders'
-  return instance.get(url, {
-    headers: { 'Authorization': bearerAuth(user) }
-  })
-}
-
-function deleteOrder(user, orderId) {
-  return instance.delete(`/api/orders/${orderId}`, {
-    headers: { 'Authorization': bearerAuth(user) }
-  })
-}
-
-function createOrder(user, order) {
-  return instance.post('/api/orders', order, {
-    headers: {
       'Content-type': 'application/json',
       'Authorization': bearerAuth(user)
     }

@@ -65,7 +65,7 @@ class MaidList extends Component {
                             <div class="card-body">
                                 <h5 class="card-title">Maid List</h5>
                                 <div className='card-body'>
-                                    <MaidTable maids={maids} />
+                                    <MaidTable maids={maids} handleGetMaids={this.handleGetMaids} />
                                 </div>
                             </div>
                         </div>

@@ -42,7 +42,9 @@ function MaidTable(props) {
                             adharCardNumber={maid.adharCardNumber}
                             panCardNumber={maid.panCardNumber}
                             isActive={maid.user.isActive}
+                            username={maid.user.username}
                             adminStyle={adminStyle}
+                            handleGetMaids={props.handleGetMaids}
                         />
                     ))
                 }

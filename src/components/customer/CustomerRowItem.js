@@ -29,6 +29,42 @@ function CustomerRowItem(props) {
         alert(obj);
     }
 
+    const submitDeactivate = (username) => {
+        const user = getUser()
+
+        const payload = {
+            "username": username
+        }
+
+        ezmaidApi.deactivateUser(user, payload)
+            .then(response => {
+                props.handleGetCustomers();
+            })
+            .catch(error => {
+                handleLogError(error)
+            })
+            .finally(() => {
+            })
+    }
+
+    const submitActivate = (username) => {
+        const user = getUser()
+
+        const payload = {
+            "username": username
+        }
+
+        ezmaidApi.activateUser(user, payload)
+            .then(response => {
+                props.handleGetCustomers();
+            })
+            .catch(error => {
+                handleLogError(error)
+            })
+            .finally(() => {
+            })
+    }
+
     const handleGetProfile = (customerId) => {
 
         const user = getUser()
@@ -61,17 +97,19 @@ function CustomerRowItem(props) {
                 <td>{props.fName}</td>
                 <td>{props.mName}</td>
                 <td>{props.lName}</td>
-                <td>{props.contactNumber}</td>
+                <td>{props.contactNumber}</td>  
                 <td>{props.address}</td>
                 <td>{props.email}</td>
                 <td>{props.adharCardNumber}</td>
                 <td>{props.panCardNumber}</td>
                 <td style={props.adminStyle()}>
-                    <button className="btn main-color text-white me-1 view-profile"
+                    <button className="btn main-color text-white me-1"
                         onClick={() => handleGetProfile(props.customerId)}>View Profile</button>
-                    <button className="btn main-color text-white me-1 verify" onClick={() => submitVerify(props.customerId)}>Verify</button>
-                    <button className="btn btn-danger text-white me-1">Deactivate</button>
-                    {!props.isActive && <button className="btn main-color text-white">Activate</button>}
+                    <button className="btn main-color text-white me-1" onClick={() => submitVerify(props.customerId)}>Verify</button>
+                    {props.isActive && 
+                        <button className="btn btn-danger text-white me-1" onClick={() => submitDeactivate(props.username)}>Deactivate</button>}
+                    {!props.isActive && 
+                        <button className="btn main-color text-white" onClick={() => submitActivate(props.username)}>Activate</button>}
                 </td>
             </tr>
 

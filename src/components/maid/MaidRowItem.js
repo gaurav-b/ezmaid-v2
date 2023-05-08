@@ -25,6 +25,42 @@ function MaidRowItem(props) {
         setShowModal(false);
     };
 
+    const submitDeactivate = (username) => {
+        const user = getUser()
+
+        const payload = {
+            "username": username
+        }
+
+        ezmaidApi.deactivateUser(user, payload)
+            .then(response => {
+                props.handleGetMaids();
+            })
+            .catch(error => {
+                handleLogError(error)
+            })
+            .finally(() => {
+            })
+    }
+
+    const submitActivate = (username) => {
+        const user = getUser()
+
+        const payload = {
+            "username": username
+        }
+
+        ezmaidApi.activateUser(user, payload)
+            .then(response => {
+                props.handleGetMaids();
+            })
+            .catch(error => {
+                handleLogError(error)
+            })
+            .finally(() => {
+            })
+    }
+
     const handleGetProfile = (maidId) => {
 
         const user = getUser()
@@ -66,8 +102,10 @@ function MaidRowItem(props) {
                     <button className="btn main-color text-white me-1"
                         onClick={() => handleGetProfile(props.maidId)}>View Profile</button>
                     <button className="btn main-color text-white me-1" type="submit">Verify</button>
-                    <button className="btn btn-danger text-white me-1" type="submit">Deactivate</button>
-                    {!props.isActive && <button className="btn main-color text-white">Activate</button>}
+                    {props.isActive && 
+                        <button className="btn btn-danger text-white me-1" onClick={() => submitDeactivate(props.username)}>Deactivate</button>}
+                    {!props.isActive && 
+                        <button className="btn main-color text-white" onClick={() => submitActivate(props.username)}>Activate</button>}
                 </td>
             </tr>
 

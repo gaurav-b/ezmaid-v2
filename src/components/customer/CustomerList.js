@@ -17,6 +17,7 @@ class CustomerList extends Component {
     }
 
     componentDidMount() {
+        
         const Auth = this.context
         const user = Auth.getUser()
 
@@ -57,7 +58,7 @@ class CustomerList extends Component {
                             <div class="card-body">
                                 <h5 class="card-title">Customer List</h5>
                                 <div className='card-body'>
-                                    <CustomerTable customers={customers} />
+                                    <CustomerTable customers={customers} handleGetCustomers={this.handleGetCustomers}/>
                                 </div>
                             </div>
                         </div>

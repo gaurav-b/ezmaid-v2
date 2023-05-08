@@ -42,7 +42,9 @@ function CustomerTable(props) {
                             adharCardNumber={customer.adharCardNumber}
                             panCardNumber={customer.panCardNumber}
                             isActive={customer.user.isActive}
+                            username={customer.user.username}
                             adminStyle={adminStyle}
+                            handleGetCustomers={props.handleGetCustomers}
                         />
                     ))
                 }
