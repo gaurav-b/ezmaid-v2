@@ -25,8 +25,23 @@ function CustomerRowItem(props) {
         setShowModal(false);
     };
 
-    const submitVerify = (obj) => {
-        alert(obj);
+    const submitVerify = (customerId) => {
+        
+        const user = getUser()
+
+        const payload = {
+            "id": customerId
+        }
+
+        ezmaidApi.verifyCustomer(user, payload)
+            .then(response => {
+                props.handleGetCustomers();
+            })
+            .catch(error => {
+                handleLogError(error)
+            })
+            .finally(() => {
+            })
     }
 
     const submitDeactivate = (username) => {
@@ -105,7 +120,9 @@ function CustomerRowItem(props) {
                 <td style={props.adminStyle()}>
                     <button className="btn main-color text-white me-1"
                         onClick={() => handleGetProfile(props.customerId)}>View Profile</button>
-                    <button className="btn main-color text-white me-1" onClick={() => submitVerify(props.customerId)}>Verify</button>
+                    
+                    {!props.isVerified && 
+                        <button className="btn main-color text-white me-1" onClick={() => submitVerify(props.customerId)}>Verify</button>}
                     {props.isActive && 
                         <button className="btn btn-danger text-white me-1" onClick={() => submitDeactivate(props.username)}>Deactivate</button>}
                     {!props.isActive && 

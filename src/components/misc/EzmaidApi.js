@@ -15,6 +15,8 @@ export const ezmaidApi = {
   changePassword,
   deactivateUser,
   activateUser,
+  verifyCustomer,
+  verifyMaid,
 
   getUsers,
   deleteUser,
@@ -93,8 +95,17 @@ function activateUser(user, payload) {
   })
 }
 
+function verifyCustomer(user, payload) {
+  return instance.put('/customers/verify', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
 
-
+function verifyMaid(user, payload) {
+  return instance.put('/maids/verify', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
 
 
 
