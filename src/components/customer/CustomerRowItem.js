@@ -120,9 +120,10 @@ function CustomerRowItem(props) {
                 <td style={props.adminStyle()}>
                     <button className="btn main-color text-white me-1"
                         onClick={() => handleGetProfile(props.customerId)}>View Profile</button>
-                    
                     {!props.isVerified && 
                         <button className="btn main-color text-white me-1" onClick={() => submitVerify(props.customerId)}>Verify</button>}
+                    {props.isVerified && 
+                        <span class="badge border-success border-1 text-success fs-6">Verified</span>}
                     {props.isActive && 
                         <button className="btn btn-danger text-white me-1" onClick={() => submitDeactivate(props.username)}>Deactivate</button>}
                     {!props.isActive && 

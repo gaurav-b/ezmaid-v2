@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Form, Message} from 'semantic-ui-react'
+import { Form, Message } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { ezmaidApi } from '../misc/EzmaidApi'
 import { parseJwt, handleLogError } from '../misc/Helpers'
@@ -22,7 +22,9 @@ class Signup extends Component {
     address: '',
     isLoggedIn: false,
     isError: false,
-    errorMessage: ''
+    errorMessage: '',
+    errorMessageDetails: '',
+    showError: false
   }
 
   componentDidMount() {
@@ -31,6 +33,10 @@ class Signup extends Component {
     this.setState({ isLoggedIn })
   }
 
+  hideErrorMessage = (e) => {
+    this.setState({ isError: false, showError: false })
+  }
+  
   handleInputChange = (e, { name, value }) => {
     this.setState({ [name]: value })
   }
@@ -43,7 +49,8 @@ class Signup extends Component {
     if (!(isCustomer && fName && lName && email && contactNumber && username && password && adharCardNumber && panCardNumber && address)) {
       this.setState({
         isError: true,
-        errorMessage: 'Please, inform all fields!'
+        errorMessage: 'Please, inform all fields!',
+        showError: true,
       })
       return
     }
@@ -71,22 +78,37 @@ class Signup extends Component {
         handleLogError(error)
         if (error.response && error.response.data) {
           const errorData = error.response.data
-          let errorMessage = 'Invalid fields'
+
+          let errorMessage = '';
+          let errorMessageDetails = '';
+
+          if (errorData.message && errorData.details) {
+            errorMessage = errorData.message;
+            errorMessageDetails = errorData.details;
+          }
+
           if (errorData.status === 409) {
             errorMessage = errorData.message
           } else if (errorData.status === 400) {
             errorMessage = errorData.errors[0].defaultMessage
+          } else {
+            this.setState({
+              errorMessage: errorMessage,
+              errorMessageDetails: errorMessageDetails,
+              showError: true,
+            })
           }
           this.setState({
             isError: true,
-            errorMessage
+            errorMessage,
+            showError: true,
           })
         }
       })
   }
 
   render() {
-    const { isLoggedIn, isError, errorMessage } = this.state
+    const { isLoggedIn, isError, errorMessage, errorMessageDetails, showError } = this.state
     if (isLoggedIn) {
       return <Navigate to='/' />
     } else {
@@ -211,7 +233,7 @@ class Signup extends Component {
                         name='address'
                         placeholder='Address'
                         onChange={this.handleInputChange}
-                        style={{ "width": "100%", 'resize': 'none', 'border-color': '#deddd9'}}
+                        style={{ "width": "100%", 'resize': 'none', 'border-color': '#deddd9' }}
                       />
                     </div>
                     <div className="text-center">
@@ -219,7 +241,8 @@ class Signup extends Component {
                       <button type="reset" className="btn btn-secondary">Reset</button>
                     </div>
                   </form>
-                  {isError && <Message negative>{errorMessage}</Message>}
+                  {isError && showError && <Message negative onClick={this.hideErrorMessage}>{errorMessage}</Message>}
+                  {errorMessageDetails && showError && <Message negative>{errorMessageDetails}</Message>}
                 </div>
               </div>
             </div>

@@ -12,13 +12,18 @@ class Login extends Component {
     username: '',
     password: '',
     isLoggedIn: false,
-    isError: false
+    isError: false,
+    showError: false
   }
 
   componentDidMount() {
     const Auth = this.context
     const isLoggedIn = Auth.userIsAuthenticated()
     this.setState({ isLoggedIn })
+  }
+
+  hideErrorMessage = (e) => {
+    this.setState({ isError: false, showError: false })
   }
 
   handleInputChange = (e, { name, value }) => {
@@ -31,6 +36,7 @@ class Login extends Component {
     const { username, password } = this.state
     if (!(username && password)) {
       this.setState({ isError: true })
+      this.setState({ showError: true })
       return
     }
 
@@ -56,11 +62,12 @@ class Login extends Component {
       .catch(error => {
         handleLogError(error)
         this.setState({ isError: true })
+        this.setState({ showError: true })
       })
   }
 
   render() {
-    const { isLoggedIn, isError } = this.state
+    const { isLoggedIn, isError, showError } = this.state
     if (isLoggedIn) {
       return <Navigate to={'/'} />
     } else {
@@ -114,7 +121,7 @@ class Login extends Component {
                       </div>
                     </form>
 
-                    {isError && <Message negative>The username or password provided are incorrect!</Message>}
+                    {isError && showError && <Message negative onClick={this.hideErrorMessage}>The username or password provided are incorrect!</Message>}
                   </div>
                 </div>
               </div>
