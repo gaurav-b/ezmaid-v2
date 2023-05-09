@@ -86,8 +86,8 @@ class CustomerProfile extends Component {
         const Auth = this.context
         const user = Auth.getUser()
 
-        const { username, currpassword, newpassword} = this.state
-        this.setState({ isLoading: true })
+        const { username, currpassword, newpassword } = this.state
+        this.setState({ isAdminsLoading: true })
 
         if (!(username && currpassword && newpassword)) {
             this.setState({
@@ -114,13 +114,26 @@ class CustomerProfile extends Component {
             })
             .catch(error => {
                 handleLogError(error)
-                this.setState({
-                    isError: true,
-                    showError: true,
-                    isSuccess: false,
-                    showSuccess: false,
-                    message: error.message
-                })
+
+                if (error.response && error.response.data) {
+                    const errorData = error.response.data
+
+                    let errorMessage = '';
+
+                    if (errorData.message) {
+                        errorMessage = errorData.message;
+                    } else {
+                        errorMessage = 'Something went wrong!';
+                    }
+
+                    this.setState({
+                        isError: true,
+                        showError: true,
+                        isSuccess: false,
+                        showSuccess: false,
+                        message: errorMessage
+                    })
+                }
             })
             .finally(() => {
                 this.setState({ isUsersLoading: false })
@@ -128,11 +141,11 @@ class CustomerProfile extends Component {
     }
 
     hideSuccessMessage = (e) => {
-        this.setState({isSuccess: false, showSuccess: false})
+        this.setState({ isSuccess: false, showSuccess: false })
     }
 
     hideErrorMessage = (e) => {
-        this.setState({isError: false, showError: false})
+        this.setState({ isError: false, showError: false })
     }
 
     render() {
@@ -214,6 +227,7 @@ class CustomerProfile extends Component {
                                                                 name='currpassword'
                                                                 id="currentPassword"
                                                                 iconPosition='left'
+                                                                type='password'
                                                                 placeholder='Current password'
                                                                 onChange={this.handleInputChange}
                                                             />
@@ -229,6 +243,7 @@ class CustomerProfile extends Component {
                                                                 name='newpassword'
                                                                 id="newPassword"
                                                                 iconPosition='left'
+                                                                type='password'
                                                                 placeholder='New password'
                                                                 onChange={this.handleInputChange}
                                                             />
@@ -241,7 +256,7 @@ class CustomerProfile extends Component {
                                                 </form>
 
                                                 {isError && showError && <Message negative onClick={this.hideErrorMessage}>{message}</Message>}
-                                                {isSuccess && showSuccess && <Message negative onClick={this.hideSuccessMessage}>{message}</Message>}
+                                                {isSuccess && showSuccess && <Message info onClick={this.hideSuccessMessage}>{message}</Message>}
                                             </div>
 
                                         </div>

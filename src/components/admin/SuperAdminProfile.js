@@ -219,6 +219,7 @@ class SuperAdminProfile extends Component {
                                                                 name='currpassword'
                                                                 id="currentPassword"
                                                                 iconPosition='left'
+                                                                type='password'
                                                                 placeholder='Current password'
                                                                 onChange={this.handleInputChange}
                                                             />
@@ -234,6 +235,7 @@ class SuperAdminProfile extends Component {
                                                                 name='newpassword'
                                                                 id="newPassword"
                                                                 iconPosition='left'
+                                                                type='password'
                                                                 placeholder='New password'
                                                                 onChange={this.handleInputChange}
                                                             />
