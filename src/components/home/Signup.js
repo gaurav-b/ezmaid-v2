@@ -50,7 +50,7 @@ class Signup extends Component {
       this.setState({
         isError: true,
         errorMessage: 'Please, inform all fields!',
-        showError: true,
+        showError: true
       })
       return
     }
@@ -242,7 +242,7 @@ class Signup extends Component {
                     </div>
                   </form>
                   {isError && showError && <Message negative onClick={this.hideErrorMessage}>{errorMessage}</Message>}
-                  {errorMessageDetails && showError && <Message negative>{errorMessageDetails}</Message>}
+                  {errorMessageDetails && showError && <Message negative onClick={this.hideErrorMessage}>{errorMessageDetails}</Message>}
                 </div>
               </div>
             </div>

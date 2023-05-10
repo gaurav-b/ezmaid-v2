@@ -20,7 +20,10 @@ class NewAdminForm extends Component {
         toAdminList: false,
         isSuperAdmin: true,
         isError: false,
-        errorMessage: ''
+        errorMessage: '',
+        isLoggedIn: false,
+        errorMessageDetails: '',
+        showError: false
     }
 
     componentDidMount() {
@@ -29,6 +32,10 @@ class NewAdminForm extends Component {
         const isSuperAdmin = user.data.rol[0] === 'SuperAdmin'
         this.setState({ isSuperAdmin })
     }
+
+    hideErrorMessage = (e) => {
+        this.setState({ isError: false, showError: false })
+      }
 
     handleInputChange = (e, { name, value }) => {
         this.setState({ [name]: value })
@@ -45,6 +52,7 @@ class NewAdminForm extends Component {
         if (!(fName && lName && email && contactNumber && username && address)) {
             this.setState({
                 isError: true,
+                showError: true,
                 errorMessage: 'Please, inform all fields!'
             })
             return
@@ -73,22 +81,38 @@ class NewAdminForm extends Component {
                 handleLogError(error)
                 if (error.response && error.response.data) {
                     const errorData = error.response.data
-                    let errorMessage = 'Invalid fields'
+
+                    let errorMessage = '';
+                    let errorMessageDetails = '';
+
+                    if (errorData.message && errorData.details) {
+                        errorMessage = errorData.message;
+                        errorMessageDetails = errorData.details;
+                    }
+
                     if (errorData.status === 409) {
                         errorMessage = errorData.message
                     } else if (errorData.status === 400) {
                         errorMessage = errorData.errors[0].defaultMessage
                     }
-                    this.setState({
+                    else {
+                        this.setState({
+                          errorMessage: errorMessage,
+                          errorMessageDetails: errorMessageDetails,
+                          showError: true,
+                        })
+                      }
+                      this.setState({
                         isError: true,
-                        errorMessage
-                    })
+                        errorMessage,
+                        showError: true,
+                      })
                 }
             })
     }
 
     render() {
-        const { isSuperAdmin, isError, errorMessage, toAdminList } = this.state
+        const { isSuperAdmin, isError, errorMessage, toAdminList, errorMessageDetails, showError} = this.state
 
         if (!isSuperAdmin) {
             return <Navigate to='/' />
@@ -174,7 +198,8 @@ class NewAdminForm extends Component {
                                             <button type="reset" className="btn btn-secondary">Reset</button>
                                         </div>
                                     </form>
-                                    {isError && <Message negative>{errorMessage}</Message>}
+                                    {isError && showError && <Message negative onClick={this.hideErrorMessage}>{errorMessage}</Message>}
+                                    {errorMessageDetails && showError && <Message negative onClick={this.hideErrorMessage}>{errorMessageDetails}</Message>}       
                                 </div>
                             </div>
                         </div>
