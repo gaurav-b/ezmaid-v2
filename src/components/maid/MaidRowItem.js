@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ezmaidApi } from '../misc/EzmaidApi'
 import { handleLogError } from '../misc/Helpers'
 import { useAuth } from '../context/AuthContext'
 import { Modal } from 'react-bootstrap';
+import StarsRating from '../misc/StarsRating'
 
 function MaidRowItem(props) {
 
@@ -19,6 +20,15 @@ function MaidRowItem(props) {
     const [adharCardNumber, setAdharCardNumber] = useState('');
     const [panCardNumber, setPanCardNumber] = useState('');
     const [username, setUsername] = useState('');
+    const [maidRating, setMaidRating] = useState('');
+    const [isCustoemr, setIsCustoemr] = useState('');
+    const [isAdmin, setIsAdmin] = useState('');
+
+    useEffect(() => {
+        const user = getUser()
+        setIsCustoemr(user.data.rol[0] === 'Customer')
+        setIsAdmin(user.data.rol[0] === 'Admin')
+    }, [])
 
     const handleModalClose = () => {
         // Update state to hide modal
@@ -26,7 +36,7 @@ function MaidRowItem(props) {
     };
 
     const submitVerify = (maidId) => {
-        
+
         const user = getUser()
 
         const payload = {
@@ -43,7 +53,7 @@ function MaidRowItem(props) {
             .finally(() => {
             })
     }
-    
+
     const submitDeactivate = (username) => {
         const user = getUser()
 
@@ -95,6 +105,7 @@ function MaidRowItem(props) {
                 setAdharCardNumber(response.data.adharCardNumber)
                 setPanCardNumber(response.data.panCardNumber)
                 setUsername(response.data.user.username)
+                setMaidRating(response.data.rating)
 
                 setShowModal(true);
             })
@@ -108,7 +119,16 @@ function MaidRowItem(props) {
     return (
         <>
             <tr>
-                <th scope='row'>{props.count}</th>
+                <th scope='row'>
+                    {isCustoemr &&
+                        <div className="form-check form-switch form-check-inline me-0">
+                            <input className="form-check-input" type="checkbox"
+                                checked={props.maidIds.some((maidIds) => maidIds === props.maidId)}
+                                onChange={(event) => props.handleCheckboxChange(event, props.maidId)}
+                            /></div>
+                    }
+                    <span className="form-check-inline">{props.count}</span>
+                </th>
                 <td>{props.fName}</td>
                 <td>{props.mName}</td>
                 <td>{props.lName}</td>
@@ -117,14 +137,20 @@ function MaidRowItem(props) {
                 <td>{props.email}</td>
                 <td>{props.adharCardNumber}</td>
                 <td>{props.panCardNumber}</td>
+                <td style={props.customerStyle()}>
+                    <button className="btn main-color text-white me-1"
+                        onClick={() => handleGetProfile(props.maidId)}>View Profile</button>
+                </td>
                 <td style={props.adminStyle()}>
                     <button className="btn main-color text-white me-1"
                         onClick={() => handleGetProfile(props.maidId)}>View Profile</button>
-                    {!props.isVerified &&     
+                    {!props.isVerified &&
                         <button className="btn main-color text-white me-1" onClick={() => submitVerify(props.maidId)}>Verify</button>}
-                    {props.isActive && 
+                    {props.isVerified &&
+                        <span class="badge border-success border-1 text-success fs-6">Verified</span>}
+                    {props.isActive &&
                         <button className="btn btn-danger text-white me-1" onClick={() => submitDeactivate(props.username)}>Deactivate</button>}
-                    {!props.isActive && 
+                    {!props.isActive &&
                         <button className="btn main-color text-white" onClick={() => submitActivate(props.username)}>Activate</button>}
                 </td>
             </tr>
@@ -135,46 +161,57 @@ function MaidRowItem(props) {
                 </Modal.Header>
                 <Modal.Body>
 
-                    <div class="modal-body">
-                        <section class="section profile">
+                    <div className="modal-body">
+                        <section className="section profile">
 
-                            <div class="tab-content pt-2">
+                            <div className="tab-content pt-2">
 
-                                <div class="tab-pane fade show active profile-overview">
+                                <div className="tab-pane fade show active profile-overview">
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label fw-bold">Full Name</div>
-                                        <div class="col-lg-9 col-md-8">{fName + ' ' + mName + ' ' + lName}</div>
+                                    <div className="row">
+                                        <div className="col-lg-3 col-md-4 label fw-bold">Full Name</div>
+                                        <div className="col-lg-9 col-md-8">{fName + ' ' + mName + ' ' + lName}</div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label fw-bold">Contact Number</div>
-                                        <div class="col-lg-9 col-md-8">{contactNumber}</div>
+                                    <div className="row">
+                                        <div className="col-lg-3 col-md-4 label fw-bold">Contact Number</div>
+                                        <div className="col-lg-9 col-md-8">{contactNumber}</div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label fw-bold">Address</div>
-                                        <div class="col-lg-9 col-md-8">{address}</div>
+                                    {isAdmin &&
+                                        <div className="row">
+                                            <div className="col-lg-3 col-md-4 label fw-bold">Address</div>
+                                            <div className="col-lg-9 col-md-8">{address}</div>
+                                        </div>
+                                    }
+                                    <div className="row">
+                                        <div className="col-lg-3 col-md-4 label fw-bold">Email</div>
+                                        <div className="col-lg-9 col-md-8">{email}</div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label fw-bold">Email</div>
-                                        <div class="col-lg-9 col-md-8">{email}</div>
-                                    </div>
+                                    {isAdmin &&
+                                        <>
+                                            <div className="row">
+                                                <div className="col-lg-3 col-md-4 label fw-bold">Adhar Card Number</div>
+                                                <div className="col-lg-9 col-md-8">{adharCardNumber}</div>
+                                            </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label fw-bold">Adhar Card Number</div>
-                                        <div class="col-lg-9 col-md-8">{adharCardNumber}</div>
-                                    </div>
+                                            <div className="row">
+                                                <div className="col-lg-3 col-md-4 label fw-bold">PAN Card Number</div>
+                                                <div className="col-lg-9 col-md-8">{panCardNumber}</div>
+                                            </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label fw-bold">PAN Card Number</div>
-                                        <div class="col-lg-9 col-md-8">{panCardNumber}</div>
-                                    </div>
+                                            <div className="row">
+                                                <div className="col-lg-3 col-md-4 label fw-bold">Username</div>
+                                                <div className="col-lg-9 col-md-8">{username}</div>
+                                            </div>
+                                        </>
+                                    }
 
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-4 label fw-bold">Username</div>
-                                        <div class="col-lg-9 col-md-8">{username}</div>
+                                    <div className="row">
+                                        <div className="col-lg-3 col-md-4 label fw-bold">Rating</div>
+                                        {/* <div className="col-lg-9 col-md-8">{maidRating}</div> */}
+                                        <div className="col-lg-9 col-md-8"><StarsRating rating={maidRating} size={32}/></div>
                                     </div>
                                 </div>
                             </div>

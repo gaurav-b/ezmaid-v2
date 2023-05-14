@@ -3,6 +3,7 @@ import { ezmaidApi } from '../misc/EzmaidApi'
 import { handleLogError } from '../misc/Helpers'
 import { useAuth } from '../context/AuthContext'
 import { Modal } from 'react-bootstrap';
+import StarsRating from '../misc/StarsRating'
 
 function CustomerRowItem(props) {
 
@@ -19,6 +20,7 @@ function CustomerRowItem(props) {
     const [adharCardNumber, setAdharCardNumber] = useState('');
     const [panCardNumber, setPanCardNumber] = useState('');
     const [username, setUsername] = useState('');
+    const [rating, setRating] = useState('');
 
     const handleModalClose = () => {
         // Update state to hide modal
@@ -95,6 +97,7 @@ function CustomerRowItem(props) {
                 setAdharCardNumber(response.data.adharCardNumber)
                 setPanCardNumber(response.data.panCardNumber)
                 setUsername(response.data.user.username)
+                setRating(response.data.rating)
 
                 setShowModal(true);
             })
@@ -177,6 +180,11 @@ function CustomerRowItem(props) {
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label fw-bold">Username</div>
                                         <div class="col-lg-9 col-md-8">{username}</div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-lg-3 col-md-4 label fw-bold">Rating</div>
+                                        <div className="col-lg-9 col-md-8"><StarsRating rating={rating} size={32}/></div>
                                     </div>
                                 </div>
                             </div>

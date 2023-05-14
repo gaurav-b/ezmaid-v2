@@ -128,6 +128,7 @@ class Signup extends Component {
                           name='isCustomer'
                           id='customer'
                           value='true'
+                          checked='true'
                           onChange={this.handleInputChange}
                           label="Customer"
                         />

@@ -10,6 +10,11 @@ function MaidTable(props) {
         return user && user.data.rol[0] === 'Admin' ? { "display": "block" } : { "display": "none" }
     }
 
+    const customerStyle = () => {
+        const user = getUser()
+        return user && user.data.rol[0] === 'Customer' ? { "display": "block" } : { "display": "none" }
+    }
+
     return (
         <table className="table table-hover">
             <thead>
@@ -24,6 +29,7 @@ function MaidTable(props) {
                     <th scope='col'>Adhar Card Number</th>
                     <th scope='col'>PAN Card Number</th>
                     <th scope='col' style={adminStyle()}>Actions</th>
+                    <th scope='col' style={customerStyle()}>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +51,11 @@ function MaidTable(props) {
                             isVerified={maid.isVerified}
                             username={maid.user.username}
                             adminStyle={adminStyle}
+                            customerStyle={customerStyle}
                             handleGetMaids={props.handleGetMaids}
+                            handleCheckboxChange={props.handleCheckboxChange}
+                            maidIds={props.maidIds}
+                            maidRating={maid.maidRating}
                         />
                     ))
                 }

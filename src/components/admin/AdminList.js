@@ -48,29 +48,31 @@ class AdminList extends Component {
         } else {
             const admins = this.state.admins;
             return (
-                <div className='mt-5 container'>
-                    <div className='card'>
-                        <div className='card-header'>
-                            <nav className='navbar navbar-expand-lg navbar-dark py-3'>
-                                <div className='navbar-collapse' id='navbarNavDropdown'>
-                                    <ul className='navbar-nav'>
-                                        <li className='nav-item'>
-                                            <h5 className="card-title">Admin list</h5>
-                                        </li>
-                                    </ul>
-                                    <ul className='navbar-nav ms-auto'>
-                                        <li className='nav-item m-1'>
-                                            <Link to="/newadmin" type='button' className='btn main-color btn-outline-light'>
-                                                Add Admin
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-
-                        <div className='card-body'>
-                            <AdminTable admins={admins} />
+                <div className="row justify-content-center align-items-center">
+                    <div className="col-lg-11 mt-5">
+                        <div className='card'>
+                            <div class="card-header">
+                                <nav className='navbar navbar-expand-lg navbar-dark py-3'>
+                                    <div className='navbar-collapse' id='navbarNavDropdown'>
+                                        <ul className='navbar-nav'>
+                                            <li className='nav-item'>
+                                                <h5 className="card-title">Admin list</h5>
+                                            </li>
+                                        </ul>
+                                        <ul className='navbar-nav ms-auto'>
+                                            <li className='nav-item m-1'>
+                                                <Link to="/newadmin" type='button' className='btn main-color btn-outline-light'>
+                                                    Add Admin
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div><div className='card-body'>
+                                <AdminTable admins={admins} />
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>

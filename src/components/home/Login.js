@@ -43,8 +43,6 @@ class Login extends Component {
     ezmaidApi.authenticate(username, password)
       .then(response => {
 
-        console.log(response);
-
         const { accessToken } = response.data
         const data = parseJwt(accessToken)
         const user = { data, accessToken }

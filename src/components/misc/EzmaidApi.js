@@ -17,10 +17,16 @@ export const ezmaidApi = {
   activateUser,
   verifyCustomer,
   verifyMaid,
-
-  getUsers,
-  deleteUser,
-  getUserMe
+  addNewRqst,
+  requestListCust,
+  requestListMaid,
+  cancelRequest,
+  finalizeRequest,
+  fulfillRequest,
+  updateRatings,
+  maidAcceptRequest,
+  maidRejectRequest,
+  addCustomerRating
 }
 
 function authenticate(username, password) {
@@ -107,29 +113,63 @@ function verifyMaid(user, payload) {
   })
 }
 
-
-
-
-
-function getUsers(user, username) {
-  const url = username ? `/api/users/${username}` : '/api/users'
-  return instance.get(url, {
+function addNewRqst(toBeSaved, user) {
+  return instance.post('/requests', toBeSaved, {
     headers: { 'Authorization': bearerAuth(user) }
   })
 }
 
-function deleteUser(user, username) {
-  return instance.delete(`/api/users/${username}`, {
-    headers: { 
-      'Content-type': 'application/json',
-      'Authorization': bearerAuth(user)
-    }
+function requestListCust(user) {
+  return instance.get('/requests/customers', {
+    headers: { 'Authorization': bearerAuth(user) }
   })
 }
 
-function getUserMe(user) {
-  return instance.get('/api/users/me', {
+function requestListMaid(user) {
+  return instance.get('/requests/maids', {
     headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function cancelRequest(user, payload) {
+  return instance.put('/requests/cancel', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+function finalizeRequest(user, payload) {
+  return instance.put('/requests/finalize', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+function fulfillRequest(user, payload) {
+  return instance.put('/requests/fulfill', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+function updateRatings(user, payload) {
+  return instance.put('/requests/updateRatings', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+function maidAcceptRequest(user, payload) {
+  return instance.put('/requests/details/maids/accept', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+function maidRejectRequest(user, payload) {
+  return instance.put('/requests/details/maids/reject', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
+  })
+}
+
+function addCustomerRating(user, payload) {
+  return instance.put('/requests/customers/ratings', payload, {
+    headers: { 'Authorization': bearerAuth(user)}
   })
 }
 

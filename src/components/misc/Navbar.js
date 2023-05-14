@@ -42,6 +42,11 @@ function Navbar() {
     return user && (user.data.rol[0] === 'SuperAdmin' || user.data.rol[0] === 'Admin') ? { "display": "block" } : { "display": "none" }
   }
 
+  const adminAndSuperAdminAndCustomerStyle = () => {
+    const user = getUser()
+    return user && (user.data.rol[0] === 'SuperAdmin' || user.data.rol[0] === 'Admin'|| user.data.rol[0] === 'Customer') ? { "display": "block" } : { "display": "none" }
+  }
+
   const getUserName = () => {
     const user = getUser()
     return user ? user.data.name : ''
@@ -81,7 +86,13 @@ function Navbar() {
                 <NavLink className='nav-link' style={adminAndSuperAdminStyle()} to='/customers'>Customer List</NavLink>
               </li>
               <li className='nav-item'>
-                <NavLink className='nav-link' style={adminAndSuperAdminStyle()} to='/maids'>Maid List</NavLink>
+                <NavLink className='nav-link' style={adminAndSuperAdminAndCustomerStyle()} to='/maids'>Maid List</NavLink>
+              </li>
+              <li className='nav-item'>
+                <NavLink className='nav-link' style={logoutMenuStyle() && customerStyle()} to='/custrequests'>Request List</NavLink>
+              </li>
+              <li className='nav-item'>
+                <NavLink className='nav-link' style={logoutMenuStyle() && maidStyle()} to='/maidrequests'>Request List</NavLink>
               </li>
             </ul>
             <ul className='navbar-nav ms-auto'>
@@ -92,7 +103,7 @@ function Navbar() {
                 <span className='navbar-brand' style={logoutMenuStyle()}>{`Hi ${getUserName()}`}</span>
               </li>
               <li className='nav-item m-1'>
-                <NavLink type='button' className='btn btn-outline-light' to='/' style={logoutMenuStyle()} onClick={logout}>Logout</NavLink>
+                <NavLink type='button' className='btn btn-outline-light' to='/login' style={logoutMenuStyle()} onClick={logout}>Logout</NavLink>
               </li>
             </ul>
           </div>

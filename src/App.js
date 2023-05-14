@@ -19,6 +19,8 @@ import CustomerProfile from './components/customer/CustomerProfile';
 import MaidProfile from './components/maid/MaidProfile';
 import AdminProfile from './components/admin/AdminProfile';
 import SuperAdminProfile from './components/admin/SuperAdminProfile';
+import CustRequestList from './components/customer/request/CustRequestList';
+import MaidRequestList from './components/maid/request/MaidRequestList';
 
 function App() {
   return (
@@ -43,7 +45,10 @@ function App() {
               <Route path="/newadmin" element={<PrivateRoute><NewAdminForm /></PrivateRoute>} />
               <Route path="/customers" element={<PrivateRoute><CustomerList /></PrivateRoute>} />
               <Route path="/maids" element={<PrivateRoute><MaidList /></PrivateRoute>} />
-              
+
+              <Route path="/custrequests" element={<PrivateRoute><CustRequestList /></PrivateRoute>} />
+              <Route path="/maidrequests" element={<PrivateRoute><MaidRequestList /></PrivateRoute>} />
+
               <Route path="*" element={<Navigate to="/" />} />
               <Route path='/contactus' element={<ContactUs />} />
               <Route path='/aboutus' element={<AboutUs />} />
