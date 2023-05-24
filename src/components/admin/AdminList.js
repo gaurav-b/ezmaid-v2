@@ -70,7 +70,7 @@ class AdminList extends Component {
                                 </nav>
                             </div>
                             <div><div className='card-body'>
-                                <AdminTable admins={admins} />
+                                <AdminTable admins={admins} handleGetAdmins={this.handleGetAdmins}/>
                             </div>
                             </div>
                         </div>

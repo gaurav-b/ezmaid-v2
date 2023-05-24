@@ -3,6 +3,7 @@ import AuthContext from '../../context/AuthContext'
 import { ezmaidApi } from '../../misc/EzmaidApi'
 import { handleLogError } from '../../misc/Helpers'
 import CustRequestTable from '../request/CustRequestTable'
+import { Navigate } from 'react-router-dom'
 
 class CustRequestList extends Component {
 
@@ -83,6 +84,8 @@ class CustRequestList extends Component {
                 </>
             )
             
+        } else {
+            return <Navigate to='/' />
         }
     }
 }

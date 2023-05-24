@@ -13,7 +13,8 @@ class Login extends Component {
     password: '',
     isLoggedIn: false,
     isError: false,
-    showError: false
+    showError: false,
+    message: ''
   }
 
   componentDidMount() {
@@ -59,13 +60,33 @@ class Login extends Component {
       })
       .catch(error => {
         handleLogError(error)
+
+        if (error.response && error.response.data) {
+          const errorData = error.response.data
+
+          let errorMessage = '';
+
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          } else {
+            errorMessage = 'Something went wrong!';
+          }
+
+          this.setState({
+            isError: true,
+            showError: true,
+            message: errorMessage
+          })
+        }
+
+
         this.setState({ isError: true })
         this.setState({ showError: true })
       })
   }
 
   render() {
-    const { isLoggedIn, isError, showError } = this.state
+    const { isLoggedIn, isError, showError, message } = this.state
     if (isLoggedIn) {
       return <Navigate to={'/'} />
     } else {
@@ -119,7 +140,7 @@ class Login extends Component {
                       </div>
                     </form>
 
-                    {isError && showError && <Message negative onClick={this.hideErrorMessage}>The username or password provided are incorrect!</Message>}
+                    {isError && showError && <Message negative onClick={this.hideErrorMessage}>{message}</Message>}
                   </div>
                 </div>
               </div>

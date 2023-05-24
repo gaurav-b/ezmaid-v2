@@ -31,6 +31,8 @@ function AdminTable(props) {
                             contactNumber={admin.contactNumber}
                             address={admin.address}
                             email={admin.email}
+                            isActive={admin.user.isActive}
+                            handleGetAdmins={props.handleGetAdmins}
                         />
                     ))
                 }

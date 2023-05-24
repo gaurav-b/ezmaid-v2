@@ -3,6 +3,7 @@ import AuthContext from '../../context/AuthContext'
 import { ezmaidApi } from '../../misc/EzmaidApi'
 import { handleLogError } from '../../misc/Helpers'
 import MaidRequestTable from '../request/MaidRequestTable'
+import { Navigate } from 'react-router-dom'
 
 class MaidRequestList extends Component {
 
@@ -83,6 +84,8 @@ class MaidRequestList extends Component {
                 </>
             )
             
+        } else {
+            return <Navigate to='/' />
         }
     }
 }

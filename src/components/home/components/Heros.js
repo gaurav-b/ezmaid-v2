@@ -20,9 +20,9 @@ export const Heros = () => {
                         <div className="ml-2">
                             <h1>How we help</h1>
                             <p className="lead">
-                            Our platform offers a solution to the common problem of finding trusted service providers for household tasks.
-                            With just a few clicks, our users can easily book a service from a pool of trained and experienced professionals,
-                            without having to spend time searching for and vetting individual providers.
+                                Our platform offers a solution to the common problem of finding trusted service providers for household tasks.
+                                With just a few clicks, our users can easily book a service from a pool of trained and experienced professionals,
+                                without having to spend time searching for and vetting individual providers.
                             </p>
                             <div className="col-12 col-md-12 container d-flex justify-content-left align-items-left">
                                 <Link className="btn main-color btn-lg text-white" to='/signup' style={enterMenuStyle()}>
@@ -38,10 +38,10 @@ export const Heros = () => {
                         <div className="ml-2">
                             <h1>Simple and easy!</h1>
                             <p className="lead">
-                            Our on-demand home service platform is designed to be simple and easy to use.
-                            With our user-friendly interface, you can easily browse and book the services you need,
-                            without any hassle. Our platform's intuitive design ensures that you can navigate 
-                            through the booking process quickly and easily.
+                                Our on-demand home service platform is designed to be simple and easy to use.
+                                With our user-friendly interface, you can easily browse and book the services you need,
+                                without any hassle. Our platform's intuitive design ensures that you can navigate
+                                through the booking process quickly and easily.
                             </p>
                         </div>
                     </div>
@@ -60,9 +60,9 @@ export const Heros = () => {
                         <div className="mt-2">
                             <h1>We help people</h1>
                             <p className="lead">
-                                The library team would love to know what have you been reading.
-                                Whether it is to learn a new skill or grow within one,
-                                we will be able to provide the top content for you!
+                                Our platform offers a solution to the common problem of finding trusted service providers for household tasks.
+                                With just a few clicks, our users can easily book a service from a pool of trained and experienced professionals,
+                                without having to spend time searching for and vetting individual providers.
                             </p>
                             <a className="btn main-color btn-lg text-white" href='#'>Sign up</a>
                         </div>
@@ -72,11 +72,10 @@ export const Heros = () => {
                         <div className="mt-2">
                             <h1>Simple and easy!</h1>
                             <p className="lead">
-                                Try to check in daily as our collection is always changing!
-                                We work nonstop to provide the most accurate book selection possible
-                                for our Luv 2 Read students! We are diligent about our book selection
-                                and our book selection and our books are always going to be our
-                                top priority.
+                                Our on-demand home service platform is designed to be simple and easy to use.
+                                With our user-friendly interface, you can easily browse and book the services you need,
+                                without any hassle. Our platform's intuitive design ensures that you can navigate
+                                through the booking process quickly and easily.
                             </p>
                         </div>
                     </div>

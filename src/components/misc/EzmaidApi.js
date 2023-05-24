@@ -54,9 +54,16 @@ function customersList(user) {
 }
 
 function maidsList(user) {
-  return instance.get('/maids', {
-    headers: { 'Authorization': bearerAuth(user) }
-  })
+
+  if(user.data.rol[0] === 'Customer') {
+    return instance.get('/maids/customers', {
+      headers: { 'Authorization': bearerAuth(user) }
+    })
+  } else {
+    return instance.get('/maids', {
+      headers: { 'Authorization': bearerAuth(user) }
+    })  
+  }
 }
 
 function addAdmin(toBeSaved, user) {

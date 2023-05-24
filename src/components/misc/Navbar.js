@@ -32,6 +32,16 @@ function Navbar() {
     return user && user.data.rol[0] === 'Customer' ? { "display": "block" } : { "display": "none" }
   }
 
+  const verifiedCustomer = () => {
+    const user = getUser()
+    return user && user.data.rol[0] === 'Customer' && user.data.verified ? { "display": "block" } : { "display": "none" }
+  }
+
+  const verifiedMaid = () => {
+    const user = getUser()
+    return user && user.data.rol[0] === 'Maid' && user.data.verified ? { "display": "block" } : { "display": "none" }
+  }
+  
   const maidStyle = () => {
     const user = getUser()
     return user && user.data.rol[0] === 'Maid' ? { "display": "block" } : { "display": "none" }
@@ -44,7 +54,7 @@ function Navbar() {
 
   const adminAndSuperAdminAndCustomerStyle = () => {
     const user = getUser()
-    return user && (user.data.rol[0] === 'SuperAdmin' || user.data.rol[0] === 'Admin'|| user.data.rol[0] === 'Customer') ? { "display": "block" } : { "display": "none" }
+    return user && (user.data.rol[0] === 'SuperAdmin' || user.data.rol[0] === 'Admin'|| (user.data.rol[0] === 'Customer' && user.data.verified)) ? { "display": "block" } : { "display": "none" }
   }
 
   const getUserName = () => {
@@ -89,10 +99,10 @@ function Navbar() {
                 <NavLink className='nav-link' style={adminAndSuperAdminAndCustomerStyle()} to='/maids'>Maid List</NavLink>
               </li>
               <li className='nav-item'>
-                <NavLink className='nav-link' style={logoutMenuStyle() && customerStyle()} to='/custrequests'>Request List</NavLink>
+                <NavLink className='nav-link' style={logoutMenuStyle() && customerStyle() && verifiedCustomer()} to='/custrequests'>Request List</NavLink>
               </li>
               <li className='nav-item'>
-                <NavLink className='nav-link' style={logoutMenuStyle() && maidStyle()} to='/maidrequests'>Request List</NavLink>
+                <NavLink className='nav-link' style={logoutMenuStyle() && maidStyle() && verifiedMaid()} to='/maidrequests'>Request List</NavLink>
               </li>
             </ul>
             <ul className='navbar-nav ms-auto'>

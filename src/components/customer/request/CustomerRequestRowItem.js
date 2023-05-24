@@ -9,6 +9,11 @@ function CustomerRequestRowItem(props) {
     const { getUser } = useAuth()
 
     const [showModal, setShowModal] = useState(false);
+    const [showYesNoModal, setShowYesNoModal] = useState(false);
+    const [confirmText, setConfirmText] = useState(false);
+    const [finalWarning, setFinalWarning] = useState(false);
+    const [selectedValue, setSelectedValue] = useState('');
+    const [methodName, setMethodName] = useState('');
 
     const [maidIds, setMaidIds] = useState([])
     const [maidRatings, setMaidRatings] = useState([])
@@ -29,10 +34,33 @@ function CustomerRequestRowItem(props) {
     const handleModalClose = () => {
         // Update state to hide modal
         setShowModal(false);
+        setShowYesNoModal(false)
         setMaidIds([]);
         setMaidRatings([]);
         maidRatingMap.clear()
     };
+
+    const handleYesNoModalClose = () => {
+        // Update state to hide modal
+        setShowYesNoModal(false)
+    };
+
+    const openYesNoModal = (value, methodName, confirmText, finalWarning) => {
+        // submitActivate
+        setShowYesNoModal(true)
+        setConfirmText(confirmText)
+        setSelectedValue(value)
+        setMethodName(methodName)
+        setFinalWarning(finalWarning)
+    }
+
+    const handleYesClick = () => {
+        if (methodName) {
+            const dynamicFunction = eval(methodName);
+            dynamicFunction(selectedValue);
+        }
+        handleModalClose()
+    }
 
     const handleRqstDtlModal = (maidId) => {
         props.handleGetRequests();
@@ -192,17 +220,19 @@ function CustomerRequestRowItem(props) {
                 <td>{props.rqstDescription}</td>
 
                 <td>
-                    {
-                        (!props.request.isCancelled && !props.request.isFinalized)
+                    {!props.request.isCancelled &&
+
+                        ((!props.request.isFinalized)
                             ?
                             <button className="btn main-color text-white me-1"
                                 onClick={() => handleRqstDtlModal()}>Cehck Details & Finalize</button>
                             :
                             <button className="btn main-color text-white me-1"
-                                onClick={() => handleRqstDtlModal()}>Cehck Details & Fulfill</button>
+                                onClick={() => handleRqstDtlModal()}>Cehck Details & Fulfill</button>)
                     }
                     {!props.request.isCancelled && !props.request.isFinalized &&
-                        <button className="btn btn-danger text-white me-1" onClick={() => submitCancelRequest(props.rqstId)}>Cancel</button>}
+                        <button className="btn btn-danger text-white me-1" 
+                            onClick={() => openYesNoModal(props.rqstId, 'submitCancelRequest', 'Are you sure to cancle this request?', 'This will be irreversable action!')}>Cancel</button>}
                     {props.request.isCancelled &&
                         <span class="badge border-danger border-1 text-danger fs-6">Cancelled</span>}
                     {props.request.isFinalized && !props.request.isFulfilled &&
@@ -211,6 +241,20 @@ function CustomerRequestRowItem(props) {
                         <span class="badge border-success border-1 text-success fs-6">Fulfilled</span>}
                 </td>
             </tr>
+
+            <Modal show={showYesNoModal} onHide={handleYesNoModalClose} className='modal fade'>
+                <Modal.Header closeButton>
+                    <Modal.Title>Please confirm!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <span class="badge border-danger border-1 text-danger fs-5">{confirmText}</span>
+                    <span class="badge border-danger border-1 text-danger fs-6">{finalWarning}</span>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => handleYesNoModalClose()}>No</button>
+                        <button type="button" className="btn main-color text-white" onClick={() => handleYesClick(selectedValue, methodName)}>Yes</button>
+                    </div>
+                </Modal.Body>
+            </Modal>
 
             <Modal show={showModal} onHide={handleModalClose} className='modal-xl'>
 
@@ -226,18 +270,18 @@ function CustomerRequestRowItem(props) {
                                 <ul className='navbar-nav ms-auto'>
                                     <li className='nav-item m-1'>
                                         {showFinalize && <a href="#" type='button' className='btn main-color btn-outline-light'
-                                            onClick={() => submitFinalizeRequest(props.request.rqstId)}>
+                                            onClick={() => openYesNoModal(props.request.rqstId, 'submitFinalizeRequest', 'Are you sure to finalize this request?', 'This will be irreversable action!')}>
                                             Finalize Request
                                         </a>}
                                         {props.request.isFinalized && !props.request.isFulfilled &&
                                             <a href="#" type='button' className='btn main-color btn-outline-light'
-                                                onClick={() => submitFulfillRequest(props.request.rqstId)}>
+                                                onClick={() => openYesNoModal(props.request.rqstId, 'submitFulfillRequest', 'Are you sure to fulfill this request?', 'This will be irreversable action!')}>
                                                 Fullfill Request
                                             </a>}
 
                                         {props.request.isFulfilled &&
                                             <a href="#" type='button' className='btn main-color btn-outline-light'
-                                                onClick={() => submitUpdateRatings(props.request.rqstId)}>
+                                            onClick={() => openYesNoModal(props.request.rqstId, 'submitUpdateRatings', 'Are you sure to update the ratings?')}>
                                                 Update ratings
                                             </a>}
                                     </li>
